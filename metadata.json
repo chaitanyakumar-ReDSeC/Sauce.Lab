@@ -1,0 +1,6 @@
+{
+  "name": "Culinaire Noir - Dynamic Recipe Book",
+  "description": "A dark-themed modern culinary recipe book dynamically powered by CSV and text documents.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

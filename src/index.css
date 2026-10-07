@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-space: 'Space Grotesk', sans-serif;
+  --color-crimson: #C20000;
+  --color-crimson-dark: #9e0000;
+  --color-crimson-light: #e61919;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #050505;
+  color: #f3f4f6;
+  overflow-x: hidden;
+}
+
+.font-heading {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Custom sleek dark scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C20000;
+}
+
+/* Crimson glow effects */
+.crimson-glow {
+  box-shadow: 0 0 25px -5px rgba(194, 0, 0, 0.4);
+}
+
+.crimson-border-glow:hover {
+  box-shadow: 0 0 20px -3px rgba(194, 0, 0, 0.35);
+  border-color: #C20000;
+}
+
