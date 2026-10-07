@@ -3,14 +3,34 @@ import { parseMetaCsv, parseIngredientsCsv } from '../utils/csvParser';
 import { parseProcessTxt } from '../utils/textParser';
 
 /**
- * Fetches and parses /public/meta.csv with cache-busting timestamp.
+ * Resolves public asset paths reliably across local dev, custom domains,
+ * and GitHub Pages subpaths with base: './'.
+ */
+export function resolvePublicPath(filePath: string): string {
+  const clean = filePath.replace(/^\/+/, '');
+  const base = import.meta.env.BASE_URL || './';
+
+  try {
+    const baseUri = document.baseURI || window.location.href;
+    const baseTarget = new URL(base, baseUri);
+    return new URL(clean, baseTarget).href;
+  } catch {
+    const normalizedBase = base.endsWith('/') ? base : `${base}/`;
+    return `${normalizedBase}${clean}`;
+  }
+}
+
+/**
+ * Fetches and parses meta.csv from the public directory.
  */
 export async function fetchRecipesMeta(): Promise<{ recipes: RecipeMeta[]; rawMetaCsv: string }> {
   const timestamp = Date.now();
-  const response = await fetch(`/meta.csv?_t=${timestamp}`);
+  const url = `${resolvePublicPath('meta.csv')}?_t=${timestamp}`;
+
+  const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`Could not load recipe collection (Status ${response.status})`);
+    throw new Error(`Could not load recipe collection (Status ${response.status}) from ${url}`);
   }
 
   const csvText = await response.text();
@@ -29,7 +49,8 @@ export async function fetchRecipeDetails(meta: RecipeMeta): Promise<RecipeFullDa
 
   let rawIngredients = '';
   try {
-    const ingRes = await fetch(`/${folder}/ingredients.csv?_t=${timestamp}`);
+    const ingUrl = `${resolvePublicPath(`${folder}/ingredients.csv`)}?_t=${timestamp}`;
+    const ingRes = await fetch(ingUrl);
     if (ingRes.ok) {
       rawIngredients = await ingRes.text();
     }
@@ -39,7 +60,8 @@ export async function fetchRecipeDetails(meta: RecipeMeta): Promise<RecipeFullDa
 
   let rawProcess = '';
   try {
-    const procRes = await fetch(`/${folder}/process.txt?_t=${timestamp}`);
+    const procUrl = `${resolvePublicPath(`${folder}/process.txt`)}?_t=${timestamp}`;
+    const procRes = await fetch(procUrl);
     if (procRes.ok) {
       rawProcess = await procRes.text();
     }

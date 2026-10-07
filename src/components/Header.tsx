@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, RefreshCw, Search } from 'lucide-react';
+import { RefreshCw, Search } from 'lucide-react';
 
 interface HeaderProps {
   searchQuery: string;
